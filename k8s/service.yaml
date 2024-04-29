@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastfood-products
+  labels:
+    app: fastfood-products
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-name: fastfood-products
+spec:
+  type: LoadBalancer
+  selector:
+    app: fastfood-products
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
