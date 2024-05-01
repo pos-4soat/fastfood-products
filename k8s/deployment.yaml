@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: fastfood-products-api
-          image: 339713094046.dkr.ecr.us-east-1.amazonaws.com/fastfood-products
+          image: 339713094046.dkr.ecr.us-east-1.amazonaws.com/ecr-fastfood_products
           ports:
             - containerPort: 80
           livenessProbe:
