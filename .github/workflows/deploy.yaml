@@ -5,8 +5,8 @@ on:
     branches: [ main ]
 
 env:
-  ECR_REPOSITORY: ecr-fast_food_products
-  EKS_CLUSTER_NAME: eks-pos_4soat
+  ECR_REPOSITORY: ecr-fastfood_products
+  EKS_CLUSTER_NAME: eks-fiap_4soat
   AWS_REGION: us-east-1
 
 jobs:
@@ -55,8 +55,8 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}        
         IMAGE_TAG: ${{ steps.commit.outputs.short }}
       run: |
-        sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8s/api-deployment.yaml && \
-        kubectl apply -f k8s/api-secret.yaml
-        kubectl apply -f k8s/api-deployment.yaml
-        kubectl apply -f k8s/api-hpa.yaml
-        kubectl apply -f k8s/api-service.yaml
+        sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8s/deployment.yaml && \
+        kubectl apply -f k8s/secrets.yaml
+        kubectl apply -f k8s/deployment.yaml
+        kubectl apply -f k8s/hpa.yaml
+        kubectl apply -f k8s/service.yaml

@@ -1,4 +1,4 @@
-﻿using fastfood_products.Constants;
+using fastfood_products.Constants;
 using fastfood_products.Data.Entity;
 using fastfood_products.Interface;
 using fastfood_products.Models.Base;
@@ -13,7 +13,7 @@ public class ProductService : IProductService
 
     public ProductService(IProductRepository repository)
     {
-        _repository = repository;
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
     public async Task<Result<CreateProductResponse>> CreateAsync(CreateProductRequest request, CancellationToken cancellationToken)
