@@ -1,4 +1,4 @@
-﻿using fastfood_products.Models.Base;
+using fastfood_products.Models.Base;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Mime;
@@ -21,7 +21,7 @@ public class ExceptionHandlerMiddleware(
             context.Response.ContentType = MediaTypeNames.Application.Json;
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             await context.Response.WriteAsync(JsonConvert.SerializeObject(
-                new ErrorResponse<Error>(new Error("ABI999"))
+                new ErrorResponse<Error>(new Error("PBI999"))
             ));
         }
     }

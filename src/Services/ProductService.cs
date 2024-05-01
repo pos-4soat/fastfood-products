@@ -1,4 +1,4 @@
-﻿using fastfood_products.Constants;
+using fastfood_products.Constants;
 using fastfood_products.Data.Entity;
 using fastfood_products.Interface;
 using fastfood_products.Models.Base;
@@ -24,7 +24,6 @@ public class ProductService : IProductService
 
     public async Task<Result<GetProductResponse>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return Result<GetProductResponse>.Failure("PBE001");
         IEnumerable<Product> result = await _repository.GetProducts(cancellationToken);
 
 

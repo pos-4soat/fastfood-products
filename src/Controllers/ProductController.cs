@@ -1,4 +1,4 @@
-﻿using fastfood_products.Controllers.Base;
+using fastfood_products.Controllers.Base;
 using fastfood_products.Interface;
 using fastfood_products.Models.Base;
 using fastfood_products.Models.Request;

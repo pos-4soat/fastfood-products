@@ -1,4 +1,4 @@
-﻿using fastfood_products.Constants;
+using fastfood_products.Constants;
 using fastfood_products.Models.Base;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

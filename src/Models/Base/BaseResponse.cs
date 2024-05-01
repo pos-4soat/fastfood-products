@@ -1,4 +1,4 @@
-﻿using fastfood_products.Constants;
+using fastfood_products.Constants;
 using Newtonsoft.Json;
 
 namespace fastfood_products.Models.Base;
