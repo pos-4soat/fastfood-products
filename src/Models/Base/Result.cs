@@ -3,7 +3,7 @@ using System.Net;
 
 namespace fastfood_products.Models.Base;
 
-public class Result
+public record Result
 {
     protected Result() { }
 
@@ -19,14 +19,9 @@ public class Result
     public HttpStatusCode StatusCode { get; set; }
     public bool IsFailure { get; init; }
     public string? ErrorMessage { get; set; }
-
-    public static Result Success => new();
-    public static Result Failure(string errorCode, HttpStatusCode statusCode) => new(errorCode, statusCode, null);
-    public static Result Failure(string errorCode, string errorMessage, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
-        => new(errorCode, statusCode, errorMessage);
 }
 
-public class Result<TValue> : Result
+public sealed record Result<TValue> : Result
 {
     protected Result() { }
     private Result(TValue value, StatusEnum status = StatusEnum.SUCCESS)
@@ -51,16 +46,4 @@ public class Result<TValue> : Result
 
     public static Result<TValue> Failure(string errorCode, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
         => new(errorCode, statusCode, null);
-
-    public static Result<TValue> Failure(Result result)
-        => new(result.ErrorCode, result.StatusCode);
-
-    public static Result<TValue> Failure(string errorCode, string? errorMessage, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
-        => new(errorCode, statusCode, errorMessage);
-
-    //public static Result<TValue> Failure(ValidationResult result, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
-    //    => new(result.Errors.First().ErrorCode, statusCode);
-
-    public static implicit operator Result<TValue>(TValue value)
-        => new() { Value = value, IsFailure = false };
 }

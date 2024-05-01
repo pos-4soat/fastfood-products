@@ -1,23 +1,14 @@
-﻿namespace fastfood_products.Models.Base;
+﻿using fastfood_products.Constants;
 
-public class Error
+namespace fastfood_products.Models.Base;
+
+/// <param name="ErrorCode"> Código de erro. </param>
+/// <param name="Message"> Mensagens de erro. </param>
+public sealed record Error(string ErrorCode, string Message)
 {
-    public Error() { }
-    public Error(string errorCode, string message)
+    public Error(string errorCode) : this(errorCode, ErrorMessages.ErrorMessageList[errorCode])
     {
-        ErrorCode = errorCode;
-        Message = message;
+        if (string.IsNullOrEmpty(Message))
+            Message = ErrorMessages.ErrorMessageList["PBI999"];
     }
-
-    /// <summary>
-    /// Código de erro.
-    /// </summary>
-    /// <example>XXX001</example>
-    public string ErrorCode { get; set; }
-
-    /// <summary>
-    /// Mensagens de erro.
-    /// </summary>
-    /// <example>Ocorreu um erro interno durante a chamada da api.</example>
-    public string Message { get; set; }
 }

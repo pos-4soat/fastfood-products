@@ -5,15 +5,10 @@ using System.Net.Mime;
 
 namespace fastfood_products.Handlers;
 
-public class ExceptionHandlerMiddleware
+public class ExceptionHandlerMiddleware(
+    RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public ExceptionHandlerMiddleware(
-        RequestDelegate next)
-    {
-        _next = next;
-    }
+    private readonly RequestDelegate _next = next;
 
     public async Task InvokeAsync(HttpContext context)
     {
@@ -21,12 +16,12 @@ public class ExceptionHandlerMiddleware
         {
             await _next(context);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             context.Response.ContentType = MediaTypeNames.Application.Json;
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             await context.Response.WriteAsync(JsonConvert.SerializeObject(
-                new ErrorResponse<Error>(new Error("999", "Internal server error"))
+                new ErrorResponse<Error>(new Error("ABI999"))
             ));
         }
     }

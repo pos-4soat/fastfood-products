@@ -26,6 +26,10 @@ logging.AddConsole();
 
 services.RegisterServices(configuration);
 
+//services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
+//services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+//services.AddFluentValidationRulesToSwagger();
+
 services
     .AddControllers(o =>
     {

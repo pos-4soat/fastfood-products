@@ -13,7 +13,7 @@ public class ProductService : IProductService
 
     public ProductService(IProductRepository repository)
     {
-        _repository = repository;
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
     public async Task<Result<CreateProductResponse>> CreateAsync(CreateProductRequest request, CancellationToken cancellationToken)
@@ -24,6 +24,7 @@ public class ProductService : IProductService
 
     public async Task<Result<GetProductResponse>> GetAllAsync(CancellationToken cancellationToken)
     {
+        return Result<GetProductResponse>.Failure("PBE001");
         IEnumerable<Product> result = await _repository.GetProducts(cancellationToken);
 
 

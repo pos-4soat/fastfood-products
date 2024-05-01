@@ -11,27 +11,17 @@ namespace fastfood_products.Controllers;
 
 [ApiVersion("1")]
 [ApiController]
-[Route("[controller]")]
-public class ProductController : BaseController
+[Route("v{ver:apiVersion}/[controller]")]
+public class ProductController(IProductService _service) : BaseController
 {
-    private readonly IProductService _service;
-
-    public ProductController(
-        IProductService service)
-    {
-        _service = service ?? throw new ArgumentNullException(nameof(service));
-    }
-
     [HttpGet]
     [SwaggerOperation(Summary = "List all products")]
     [SwaggerResponse((int)HttpStatusCode.OK, "OK", typeof(Response<>))]
     //[SwaggerResponse((int)HttpStatusCode.BadRequest, "Error handled by the application", typeof(TopupCreateErrorResponse))]
-    [SwaggerResponse((int)HttpStatusCode.Unauthorized, "Access Denied", typeof(ErrorResponse<Error>))]
-    [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Unknown error", typeof(ErrorResponse<Error>))]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken)
     {
         Result<GetProductResponse> result = await _service.GetAllAsync(cancellationToken);
-        IActionResult response = await GetResponseFromResultAsync(result, cancellationToken);
+        IActionResult response = await GetResponseFromResult(result);
         return response;
     }
 
@@ -65,12 +55,10 @@ public class ProductController : BaseController
     [SwaggerOperation(Summary = "Create a product")]
     [SwaggerResponse((int)HttpStatusCode.OK, "OK", typeof(Response<CreateProductResponse>))]
     //[SwaggerResponse((int)HttpStatusCode.BadRequest, "Error handled by the application", typeof(TopupCreateErrorResponse))]
-    [SwaggerResponse((int)HttpStatusCode.Unauthorized, "Access Denied", typeof(ErrorResponse<Error>))]
-    [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Unknown error", typeof(ErrorResponse<Error>))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateProductRequest createProductRequest, CancellationToken cancellationToken)
     {
         Result<CreateProductResponse> result = await _service.CreateAsync(createProductRequest, cancellationToken);
-        IActionResult response = await GetResponseFromResultAsync(result, cancellationToken);
+        IActionResult response = await GetResponseFromResult(result);
         return response;
     }
 

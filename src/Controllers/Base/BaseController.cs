@@ -1,50 +1,52 @@
 ﻿using fastfood_products.Constants;
 using fastfood_products.Models.Base;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace fastfood_products.Controllers.Base;
 
 [ApiController]
 [Produces("application/json")]
+[SwaggerResponse((int)HttpStatusCode.Unauthorized, "Access Denied", typeof(ErrorResponse<Error>))]
+[SwaggerResponse((int)HttpStatusCode.InternalServerError, "Unknown Error", typeof(ErrorResponse<Error>))]
 public abstract class BaseController : ControllerBase
 {
     public BaseController()
     {
     }
 
-    protected async ValueTask<IActionResult> GetResponseFromResultAsync<TValue>(
-        Result<TValue> result, CancellationToken cancellationToken)
+    protected ValueTask<IActionResult> GetResponseFromResult<TValue>(
+        Result<TValue> result)
     {
         if (result.IsFailure)
         {
-            ErrorResponse<BaseResponse> errorResponse = await CreateErrorResponseFromResult(result, cancellationToken);
+            ErrorResponse<Error> errorResponse = CreateErrorResponseFromResult(result);
 
-            return StatusCode((int)result.StatusCode, errorResponse);
+            return new ValueTask<IActionResult>(StatusCode((int)result.StatusCode, errorResponse));
         }
 
-        Response<object> response = new Response<object>(result.Value!, result.Status);
+        Response<object> response = new(result.Value!, result.Status);
 
-        return StatusCode((int)HttpStatusCode.OK, response);
+        return new ValueTask<IActionResult>(StatusCode((int)HttpStatusCode.OK, response));
     }
 
-    protected async ValueTask<IActionResult> GetResponseFromResultAsync(
-       Result result, CancellationToken cancellationToken)
+    protected ValueTask<IActionResult> GetResponseFromResult(
+       Result result)
     {
         if (result.IsFailure)
         {
-            ErrorResponse<BaseResponse> errorResponse = await CreateErrorResponseFromResult(result, cancellationToken);
+            ErrorResponse<Error> errorResponse = CreateErrorResponseFromResult(result);
 
-            return StatusCode((int)result.StatusCode, errorResponse);
+            return new ValueTask<IActionResult>(StatusCode((int)result.StatusCode, errorResponse));
         }
 
-        return StatusCode((int)HttpStatusCode.OK);
+        return new ValueTask<IActionResult>(StatusCode((int)HttpStatusCode.OK));
     }
 
-    private async Task<ErrorResponse<BaseResponse>> CreateErrorResponseFromResult(Result result, CancellationToken cancellationToken)
+    private static ErrorResponse<Error> CreateErrorResponseFromResult(Result result)
     {
-        //var errorReponse = _mapper.Map<ErrorResponse>(error);
-        BaseResponse obj = new BaseResponse(StatusEnum.ERROR);
-        return new ErrorResponse<BaseResponse>(obj!);
+        Error errorReponse = new(result.ErrorCode);
+        return new ErrorResponse<Error>(errorReponse!);
     }
 }
