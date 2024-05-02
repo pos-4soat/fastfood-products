@@ -9,8 +9,8 @@ using System.Net;
 
 namespace fastfood_products.Controllers;
 
-[ApiVersion("1")]
 [ApiController]
+[ApiVersion("1.0")]
 [Route("v{ver:apiVersion}/[controller]")]
 public class ProductController(IProductService _service) : BaseController
 {

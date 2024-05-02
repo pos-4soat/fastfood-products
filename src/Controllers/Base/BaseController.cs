@@ -6,7 +6,6 @@ using System.Net;
 
 namespace fastfood_products.Controllers.Base;
 
-[ApiController]
 [Produces("application/json")]
 [SwaggerResponse((int)HttpStatusCode.Unauthorized, "Access Denied", typeof(ErrorResponse<Error>))]
 [SwaggerResponse((int)HttpStatusCode.InternalServerError, "Unknown Error", typeof(ErrorResponse<Error>))]
