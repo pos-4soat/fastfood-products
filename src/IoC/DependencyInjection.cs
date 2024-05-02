@@ -22,7 +22,12 @@ public static class DependencyInjection
 
     private static void ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
     {
+        Console.WriteLine(nameof(ConfigureDatabase));
+
+        Console.WriteLine(configuration.GetConnectionString("SqlServerConnection"));
+
         _ = services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"),
                                                      b => b.MigrationsAssembly("fastfood-products")));
+        Console.WriteLine(nameof(ConfigureDatabase));
     }
 }
