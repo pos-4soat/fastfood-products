@@ -51,7 +51,6 @@ var conStr = builder.Configuration.GetConnectionString("SqlServerConnection");
 if (string.IsNullOrWhiteSpace(conStr))
     throw new InvalidOperationException(
         $"Could not find a connection string named 'SqlServerConnection'.");
-
 services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen(setup =>
@@ -86,6 +85,12 @@ services
 
 services.RegisterServices(configuration);
 
+services
+    .AddHealthChecks()
+    .AddCheck<SimpleHealthCheck>(
+        "HealthCheck",
+        tags: ["HealthCheck"]);
+
 WebApplication app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -114,6 +119,9 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 app.UseHttpsRedirection();
+
+app.MapControllerRoute(name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
