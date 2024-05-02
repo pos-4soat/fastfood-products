@@ -33,6 +33,11 @@ app.UseRouting();
 app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 
+app.UseCors(options => options
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
 app.MapHealthChecks("/health/ready", new HealthCheckOptions
 {
     Predicate = _ => _.Tags.Contains("ready"),
