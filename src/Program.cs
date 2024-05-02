@@ -1,9 +1,11 @@
+using fastfood_products.Data.Context;
 using fastfood_products.Handlers;
 using fastfood_products.IoC;
 using fastfood_products.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
@@ -93,36 +95,36 @@ services
 
 WebApplication app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
+
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseStaticFiles();
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHealthChecks("/health", new HealthCheckOptions { ResponseWriter = HealthCheckResponseWriter.Write });
-
 app.UseEndpoints(endpoints =>
 {
-    _ = endpoints.MapControllers();
+    app.MapHealthChecks("health/readiness", new HealthCheckOptions
+    {
+        Predicate = healthCheck => healthCheck.Tags.Contains("HealthCheck"),
+    });
 
-    _ = endpoints.MapDefaultControllerRoute();
-    _ = endpoints.MapHealthChecks("health").WithMetadata(new AllowAnonymousAttribute());
-    _ = endpoints.MapHealthChecks("/health/live", new HealthCheckOptions
+    app.MapHealthChecks("health/liveness", new HealthCheckOptions
     {
-        Predicate = (_) => false
-    }).WithMetadata(new AllowAnonymousAttribute());
-    _ = endpoints.MapHealthChecks("/metrics", new HealthCheckOptions
-    {
-        Predicate = (_) => false
-    }).WithMetadata(new AllowAnonymousAttribute());
-    _ = endpoints.MapHealthChecks("/health/ready", new HealthCheckOptions
-    {
-        Predicate = (check) => check.Tags.Contains("ready"),
-        ResponseWriter = HealthCheckResponseWriter.Write
-    }).WithMetadata(new AllowAnonymousAttribute());
+        Predicate = healthCheck => healthCheck.Tags.Contains("HealthCheck"),
+    });
+
+    endpoints.MapControllers();
 });
+
+app.MapControllerRoute(name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
