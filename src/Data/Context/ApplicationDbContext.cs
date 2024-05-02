@@ -15,12 +15,14 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        Console.WriteLine(nameof(OnModelCreating));
         modelBuilder.UseIdentityColumns();
         modelBuilder.HasDefaultSchema("FastFood");
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
         SeedData(modelBuilder);
+        Console.WriteLine("Finish");
     }
 
     private void SeedData(ModelBuilder modelBuilder)
