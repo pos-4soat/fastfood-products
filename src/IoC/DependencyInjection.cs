@@ -27,7 +27,7 @@ public static class DependencyInjection
         Console.WriteLine(configuration.GetConnectionString("SqlServerConnection"));
 
         _ = services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection"),
-                                                     b => b.MigrationsAssembly("fastfood-products")));
+                                                     b => b.MigrationsAssembly("fastfood-products")).LogTo(s => Console.WriteLine(s)));
         Console.WriteLine(nameof(ConfigureDatabase));
     }
 }
