@@ -9,7 +9,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: fastfood-products
+    app: fastfood-products-api
   ports:
     - port: 80
       targetPort: 80
