@@ -54,10 +54,6 @@ services
     });
 
 services
-    .AddHealthChecks()
-    .AddCheck("self", () => HealthCheckResult.Healthy());
-
-services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen(setup =>
     {
@@ -69,19 +65,19 @@ services
                 Description = "Documentacao para o webservice, explicando e detalhando cada endpoint"
             });
 
-        setup.EnableAnnotations();
-        setup.IgnoreObsoleteActions();
-        setup.IgnoreObsoleteProperties();
+        //setup.EnableAnnotations();
+        //setup.IgnoreObsoleteActions();
+        //setup.IgnoreObsoleteProperties();
 
-        setup.DocInclusionPredicate((version, desc) =>
-        {
-            if (!desc.TryGetMethodInfo(out MethodInfo methodInfo)) return false;
-            IEnumerable<ApiVersion> versions = methodInfo.DeclaringType
-                .GetCustomAttributes(true)
-                .OfType<ApiVersionAttribute>()
-                .SelectMany(attr => attr.Versions);
-            return versions.Any(v => $"v{v}" == version);
-        });
+        //setup.DocInclusionPredicate((version, desc) =>
+        //{
+        //    if (!desc.TryGetMethodInfo(out MethodInfo methodInfo)) return false;
+        //    IEnumerable<ApiVersion> versions = methodInfo.DeclaringType
+        //        .GetCustomAttributes(true)
+        //        .OfType<ApiVersionAttribute>()
+        //        .SelectMany(attr => attr.Versions);
+        //    return versions.Any(v => $"v{v}" == version);
+        //});
 
         string filePath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
         setup.IncludeXmlComments(filePath);
@@ -92,6 +88,12 @@ services
         options.AssumeDefaultVersionWhenUnspecified = true;
         options.DefaultApiVersion = new ApiVersion(1, 0);
     });
+
+services
+    .AddHealthChecks()
+    .AddCheck<SimpleHealthCheck>(
+        "HealthCheck",
+        tags: ["HealthCheck"]);
 
 WebApplication app = builder.Build();
 
