@@ -26,8 +26,6 @@ configuration
 logging.ClearProviders();
 logging.AddConsole();
 
-services.RegisterServices(configuration);
-
 //services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
 //services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 //services.AddFluentValidationRulesToSwagger();
@@ -41,10 +39,6 @@ services
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
-        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-        options.JsonSerializerOptions.AllowTrailingCommas = true;
-        options.JsonSerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All);
     });
 
 services
@@ -53,6 +47,11 @@ services
         options.SuppressModelStateInvalidFilter = true;
     });
 
+var conStr = builder.Configuration.GetConnectionString("SqlServerConnection");
+if (string.IsNullOrWhiteSpace(conStr))
+    throw new InvalidOperationException(
+        $"Could not find a connection string named 'SqlServerConnection'.");
+
 services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen(setup =>
@@ -60,40 +59,32 @@ services
         setup.SwaggerDoc("v1",
             new Microsoft.OpenApi.Models.OpenApiInfo
             {
-                Title = "Fast Food Products",
+                Title = "FastFood Products",
                 Version = "v1",
-                Description = "Documentacao para o webservice, explicando e detalhando cada endpoint"
+                Contact = new Microsoft.OpenApi.Models.OpenApiContact()
+                {
+                    //TODO - Add e-mail and name
+                    Email = "",
+                    Name = "",
+                }
             });
 
-        //setup.EnableAnnotations();
-        //setup.IgnoreObsoleteActions();
-        //setup.IgnoreObsoleteProperties();
-
-        //setup.DocInclusionPredicate((version, desc) =>
-        //{
-        //    if (!desc.TryGetMethodInfo(out MethodInfo methodInfo)) return false;
-        //    IEnumerable<ApiVersion> versions = methodInfo.DeclaringType
-        //        .GetCustomAttributes(true)
-        //        .OfType<ApiVersionAttribute>()
-        //        .SelectMany(attr => attr.Versions);
-        //    return versions.Any(v => $"v{v}" == version);
-        //});
-
-        string filePath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
+        var filePath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
         setup.IncludeXmlComments(filePath);
     })
     .AddApiVersioning(options =>
     {
         options.ReportApiVersions = true;
         options.AssumeDefaultVersionWhenUnspecified = true;
-        options.DefaultApiVersion = new ApiVersion(1, 0);
-    });
-
-services
+        options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    })
     .AddHealthChecks()
     .AddCheck<SimpleHealthCheck>(
         "HealthCheck",
-        tags: ["HealthCheck"]);
+        tags: new[] { "HealthCheck" })
+    .AddSqlServer(conStr);
+
+services.RegisterServices(configuration);
 
 WebApplication app = builder.Build();
 
@@ -103,13 +94,10 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
-app.UseHttpsRedirection();
+app.UseSwagger().UseSwaggerUI();
 app.UseRouting();
-
+app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
-
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.UseEndpoints(endpoints =>
 {
@@ -125,6 +113,7 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapControllers();
 });
+app.UseHttpsRedirection();
 
 app.MapControllerRoute(name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
