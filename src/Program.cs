@@ -85,12 +85,6 @@ services
 
 services.RegisterServices(configuration);
 
-services
-    .AddHealthChecks()
-    .AddCheck<SimpleHealthCheck>(
-        "HealthCheck",
-        tags: ["HealthCheck"]);
-
 WebApplication app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
