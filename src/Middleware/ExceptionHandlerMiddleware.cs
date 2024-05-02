@@ -16,8 +16,10 @@ public class ExceptionHandlerMiddleware(
         {
             await _next(context);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Console.WriteLine(e.Message);
+            Console.WriteLine(e.InnerException);
             context.Response.ContentType = MediaTypeNames.Application.Json;
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             await context.Response.WriteAsync(JsonConvert.SerializeObject(
