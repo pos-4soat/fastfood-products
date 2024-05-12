@@ -32,12 +32,18 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Install Coverlet
-      run: dotnet tool install --global dotnet-coverage
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
 
-    - name: Build, test, and collect code coverage
+    - name: Test and collect code coverage
       run: |
+        dotnet tool install --global dotnet-coverage
         dotnet coverage collect --target "dotnet test" --output cobertura.xml
+
+    - name: Upload code coverage to CodeCov
+      run: |
+        dotnet tool install --global codecov.tool
+        codecov -f cobertura.xml
 
     - name: Upload code coverage to CodeCov
       uses: codecov/codecov-action@v2
