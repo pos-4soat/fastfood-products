@@ -24,16 +24,8 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
       
-    - name: Install .NET Core SDK
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 8.x
-
-    - name: Restore dependencies
-      run: dotnet restore
-      
     - name: Test
-      run: dotnet test -p:fastfood-products.Testes.csproj --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
+      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory coverage
 
     - name: Code Coverage Summary Report
       uses: irongut/CodeCoverageSummary@v1.3.0
