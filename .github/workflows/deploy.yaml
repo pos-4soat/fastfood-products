@@ -23,7 +23,27 @@ jobs:
 
     - name: Check out code
       uses: actions/checkout@v2
-    
+      
+    - name: Install .NET Core SDK
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 8.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Install Coverlet
+      run: dotnet tool install --global dotnet-coverage
+
+    - name: Build, test, and collect code coverage
+      run: |
+        dotnet coverage collect --target "dotnet test" --output cobertura.xml
+
+    - name: Upload code coverage to CodeCov
+      uses: codecov/codecov-action@v2
+      with:
+        files: cobertura.xml       
+      
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
