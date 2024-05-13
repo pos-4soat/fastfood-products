@@ -105,8 +105,6 @@ app.UseEndpoints(endpoints =>
         Predicate = _ => _.Tags.Contains("live"),
         ResponseWriter = HealthCheckResponseWriter.Write
     });
-
-    endpoints.MapControllers();
 });
 
 app.Run();
