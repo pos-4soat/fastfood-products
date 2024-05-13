@@ -15,7 +15,7 @@ spec:
         - name: fastfood-products-api
           image: 339713094046.dkr.ecr.us-east-1.amazonaws.com/ecr-fastfood_products
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           livenessProbe:
             httpGet:
               path: /health/live
