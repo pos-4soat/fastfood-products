@@ -37,16 +37,16 @@ services
     .AddControllers(o =>
     {
         o.Filters.Add(typeof(ValidationBehavior));
-        o.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
     })
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
-        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-        options.JsonSerializerOptions.AllowTrailingCommas = true;
-        options.JsonSerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All);
     });
+
+services.AddHttpsRedirection(options =>
+{
+    options.HttpsPort = 443;
+});
 
 services
     .AddEndpointsApiExplorer()
