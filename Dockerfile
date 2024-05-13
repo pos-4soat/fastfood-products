@@ -6,6 +6,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY . .
 
+RUN ls
+
 RUN dotnet restore "src/fastfood-products.csproj"
 RUN dotnet build "src/fastfood-products.csproj" -c Release -o /app/build
 
