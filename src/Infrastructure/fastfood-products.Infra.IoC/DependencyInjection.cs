@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace fastfood_products.Infra.IoC;
 
+[ExcludeFromCodeCoverage]
 public static class DependencyInjection
 {
     public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)

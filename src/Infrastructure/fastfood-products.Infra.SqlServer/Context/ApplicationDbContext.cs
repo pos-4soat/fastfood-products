@@ -1,9 +1,11 @@
 ﻿using fastfood_products.Domain.Entity;
 using fastfood_products.Domain.Enum;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace fastfood_products.Infra.SqlServer.Context;
 
+[ExcludeFromCodeCoverage]
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

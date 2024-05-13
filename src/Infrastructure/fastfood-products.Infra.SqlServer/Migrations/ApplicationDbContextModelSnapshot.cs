@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fastfood_products.Infra.SqlServer.Context;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
 namespace fastfood_products.Infra.SqlServer.Migrations
 {
+    [ExcludeFromCodeCoverage]
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {

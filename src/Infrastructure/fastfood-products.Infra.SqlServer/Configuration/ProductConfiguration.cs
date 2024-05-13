@@ -1,9 +1,11 @@
 ﻿using fastfood_products.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics.CodeAnalysis;
 
 namespace fastfood_products.Infra.SqlServer.Configuration;
 
+[ExcludeFromCodeCoverage]
 public class ProductConfiguration : IEntityTypeConfiguration<ProductEntity>
 {
     public void Configure(EntityTypeBuilder<ProductEntity> builder)
