@@ -11,7 +11,7 @@ env:
 
 jobs:
 ##############################################################
-  setup:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,11 +27,6 @@ jobs:
       with:
         dotnet-version: 8.x
 
-#############################################################
-  test:
-    needs: setup
-    runs-on: ubuntu-latest
-    
     - name: Test
       run: dotnet test --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" --results-directory coverage
 
@@ -48,7 +43,7 @@ jobs:
       
 #############################################################
   delpoy:
-    needs: test
+    needs: build-and-test
     runs-on: ubuntu-latest
       
     - name: Configure AWS credentials
