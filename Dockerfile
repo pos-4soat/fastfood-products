@@ -16,4 +16,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-ENTRYPOINT ["dotnet", "fastfood-products.dll"]
+ENTRYPOINT ["dotnet", "fastfood-products.API.dll"]
