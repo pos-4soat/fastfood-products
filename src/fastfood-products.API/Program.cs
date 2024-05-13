@@ -83,31 +83,30 @@ using (IServiceScope scope = app.Services.CreateScope())
 }
 
 app.UseSwagger().UseSwaggerUI();
+app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 
-app.UseCors(options => options
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
-
-app.MapHealthChecks("/health/ready", new HealthCheckOptions
+app.UseEndpoints(endpoints =>
 {
-    Predicate = _ => _.Tags.Contains("ready"),
-    ResponseWriter = HealthCheckResponseWriter.Write
+    endpoints.MapControllers();
+
+    endpoints.MapDefaultControllerRoute();
+
+    app.MapHealthChecks("health/ready", new HealthCheckOptions
+    {
+        Predicate = _ => _.Tags.Contains("ready"),
+        ResponseWriter = HealthCheckResponseWriter.Write
+    });
+
+    app.MapHealthChecks("health/live", new HealthCheckOptions
+    {
+        Predicate = _ => _.Tags.Contains("live"),
+        ResponseWriter = HealthCheckResponseWriter.Write
+    });
+
+    endpoints.MapControllers();
 });
-
-app.MapHealthChecks("/health/live", new HealthCheckOptions
-{
-    Predicate = _ => _.Tags.Contains("live"),
-    ResponseWriter = HealthCheckResponseWriter.Write
-});
-
-app.MapDefaultControllerRoute();
-
-app.MapControllers();
-
-app.UseHttpsRedirection();
 
 app.Run();
