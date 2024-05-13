@@ -95,13 +95,13 @@ app.UseCors(options => options
 app.MapHealthChecks("/health/ready", new HealthCheckOptions
 {
     Predicate = _ => _.Tags.Contains("ready"),
-    ResponseWriter = HealthCheckResponseWriter.WriteResponse
+    ResponseWriter = HealthCheckResponseWriter.Write
 });
 
 app.MapHealthChecks("/health/live", new HealthCheckOptions
 {
     Predicate = _ => _.Tags.Contains("live"),
-    ResponseWriter = HealthCheckResponseWriter.WriteResponse
+    ResponseWriter = HealthCheckResponseWriter.Write
 });
 
 app.MapDefaultControllerRoute();
