@@ -12,5 +12,5 @@ spec:
     app: fastfood-products-api
   ports:
     - port: 5050
-      targetPort: 80
+      targetPort: 8080
       protocol: TCP

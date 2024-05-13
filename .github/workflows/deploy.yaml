@@ -10,10 +10,8 @@ env:
   AWS_REGION: us-east-1
 
 jobs:
-  
-  build:
-    
-    name: Deployment
+##############################################################
+  setup:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,17 +19,19 @@ jobs:
       id: commit
       uses: prompt/actions-commit-hash@v2
 
-    - name: Check out the code
-      uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
+  
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v1
       with:
-        fetch-depth: 0
-      
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: |
-          8.x
-          
+        dotnet-version: 8.x
+
+#############################################################
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    
     - name: Test
       run: dotnet test --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" --results-directory coverage
 
@@ -45,6 +45,11 @@ jobs:
 
     - name: Write to Job Summary
       run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
+      
+#############################################################
+  delpoy:
+    needs: test
+    runs-on: ubuntu-latest
       
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1

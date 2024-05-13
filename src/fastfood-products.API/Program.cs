@@ -31,8 +31,7 @@ if (string.IsNullOrWhiteSpace(conStr))
 
 services
     .AddHealthChecks()
-    .AddCheck<SimpleHealthCheck>("live", failureStatus: HealthStatus.Unhealthy, tags: new[] { "live" })
-    .AddSqlServer(conStr);
+    .AddCheck<SimpleHealthCheck>("live", failureStatus: HealthStatus.Unhealthy, tags: new[] { "live" });
 
 services
     .AddControllers(o =>
