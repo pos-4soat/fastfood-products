@@ -1,12 +1,5 @@
 ﻿using fastfood_products.Application.UseCases.CreateProduct;
-using fastfood_products.Application.UseCases.EditProduct;
 using fastfood_products.Domain.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static NUnit.Framework.Internal.OSPlatform;
 
 namespace fastfood_products.Testes.UnitTests.Application.CreateProduct;
 
@@ -23,9 +16,9 @@ public class CreateProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateRequirement()
     {
-        var request = _modelFakerFactory.CreateProductRequestWithName(string.Empty);
+        CreateProductRequest request = _modelFakerFactory.CreateProductRequestWithName(string.Empty);
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE002");
     }
@@ -33,9 +26,9 @@ public class CreateProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateNameLenght()
     {
-        var request = _modelFakerFactory.CreateProductRequestWithName("Ab");
+        CreateProductRequest request = _modelFakerFactory.CreateProductRequestWithName("Ab");
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE003");
     }
@@ -43,9 +36,9 @@ public class CreateProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateCategoryRequirement()
     {
-        var request = _modelFakerFactory.CreateProductRequestWithType(null);
+        CreateProductRequest request = _modelFakerFactory.CreateProductRequestWithType(null);
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE004");
     }
@@ -53,9 +46,9 @@ public class CreateProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateCategoryEnum()
     {
-        var request = _modelFakerFactory.CreateProductRequestWithType((CategoryType)999);
+        CreateProductRequest request = _modelFakerFactory.CreateProductRequestWithType((CategoryType)999);
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE005");
     }
@@ -63,9 +56,9 @@ public class CreateProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidatePriceRequirement()
     {
-        var request = _modelFakerFactory.CreateProductRequestWithPrice(null);
+        CreateProductRequest request = _modelFakerFactory.CreateProductRequestWithPrice(null);
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE006");
     }
@@ -73,9 +66,9 @@ public class CreateProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateDescriptionRequirement()
     {
-        var request = _modelFakerFactory.CreateProductRequestWithDescription(null);
+        CreateProductRequest request = _modelFakerFactory.CreateProductRequestWithDescription(null);
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE007");
     }
@@ -83,9 +76,9 @@ public class CreateProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateDescriptionLenght()
     {
-        var request = _modelFakerFactory.CreateProductRequestWithDescription("Ab");
+        CreateProductRequest request = _modelFakerFactory.CreateProductRequestWithDescription("Ab");
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE008");
     }
@@ -93,9 +86,9 @@ public class CreateProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateImageRequirement()
     {
-        var request = _modelFakerFactory.CreateProductRequestWithImage(null);
+        CreateProductRequest request = _modelFakerFactory.CreateProductRequestWithImage(null);
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE009");
     }

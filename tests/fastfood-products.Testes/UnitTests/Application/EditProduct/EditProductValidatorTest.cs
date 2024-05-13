@@ -1,11 +1,5 @@
-﻿using fastfood_products.Application.UseCases.CreateProduct;
-using fastfood_products.Application.UseCases.EditProduct;
+﻿using fastfood_products.Application.UseCases.EditProduct;
 using fastfood_products.Domain.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace fastfood_products.Testes.UnitTests.Application.EditProduct;
 
@@ -22,9 +16,9 @@ public class EditProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateIdRequirement()
     {
-        var request = _modelFakerFactory.EditProductRequestWithId();
+        EditProductRequest request = _modelFakerFactory.EditProductRequestWithId();
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE011");
     }
@@ -32,9 +26,9 @@ public class EditProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateNameRequirement()
     {
-        var request = _modelFakerFactory.EditProductRequestWithName(string.Empty);
+        EditProductRequest request = _modelFakerFactory.EditProductRequestWithName(string.Empty);
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE002");
     }
@@ -42,9 +36,9 @@ public class EditProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateNameLenght()
     {
-        var request = _modelFakerFactory.EditProductRequestWithName("Ab");
+        EditProductRequest request = _modelFakerFactory.EditProductRequestWithName("Ab");
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE003");
     }
@@ -52,9 +46,9 @@ public class EditProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateCategoryRequirement()
     {
-        var request = _modelFakerFactory.EditProductRequestWithType(null);
+        EditProductRequest request = _modelFakerFactory.EditProductRequestWithType(null);
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE004");
     }
@@ -62,9 +56,9 @@ public class EditProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateCategoryEnum()
     {
-        var request = _modelFakerFactory.EditProductRequestWithType((CategoryType)999);
+        EditProductRequest request = _modelFakerFactory.EditProductRequestWithType((CategoryType)999);
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE005");
     }
@@ -72,9 +66,9 @@ public class EditProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidatePriceRequirement()
     {
-        var request = _modelFakerFactory.EditProductRequestWithPrice(null);
+        EditProductRequest request = _modelFakerFactory.EditProductRequestWithPrice(null);
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE006");
     }
@@ -82,9 +76,9 @@ public class EditProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateDescriptionRequirement()
     {
-        var request = _modelFakerFactory.EditProductRequestWithDescription(null);
+        EditProductRequest request = _modelFakerFactory.EditProductRequestWithDescription(null);
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE007");
     }
@@ -92,9 +86,9 @@ public class EditProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateDescriptionLenght()
     {
-        var request = _modelFakerFactory.EditProductRequestWithDescription("Ab");
+        EditProductRequest request = _modelFakerFactory.EditProductRequestWithDescription("Ab");
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE008");
     }
@@ -102,9 +96,9 @@ public class EditProductValidatorTest : TestFixture
     [Test]
     public void ShouldValidateImageRequirement()
     {
-        var request = _modelFakerFactory.EditProductRequestWithImage(null);
+        EditProductRequest request = _modelFakerFactory.EditProductRequestWithImage(null);
 
-        var result = _validator.Validate(request);
+        FluentValidation.Results.ValidationResult result = _validator.Validate(request);
 
         AssertExtensions.AssertValidation(result, "PBE009");
     }
