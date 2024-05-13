@@ -6,13 +6,11 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY . .
 
-RUN ls
-
-RUN dotnet restore "src/fastfood-products.csproj"
-RUN dotnet build "src/fastfood-products.csproj" -c Release -o /app/build
+RUN dotnet restore "src/fastfood-products.API/fastfood-products.API.csproj"
+RUN dotnet build "src/fastfood-products.API/fastfood-products.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "src/fastfood-products.csproj" -c Release -o /app/publish
+RUN dotnet publish "src/fastfood-products.API/fastfood-products.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
