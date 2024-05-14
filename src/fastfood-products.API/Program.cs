@@ -83,7 +83,7 @@ using (IServiceScope scope = app.Services.CreateScope())
 }
 
 app.UseSwagger().UseSwaggerUI();
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
