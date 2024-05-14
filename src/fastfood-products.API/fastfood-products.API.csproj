@@ -7,7 +7,7 @@
     <RootNamespace>fastfood_products.API</RootNamespace>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>$(MSBuildProjectDirectory)/../</DockerfileContext>
+    <DockerfileContext>..\..\..</DockerfileContext>
     <UserSecretsId>44f75ee2-88d0-4744-9b7f-c2d0b554ea37</UserSecretsId>
   </PropertyGroup>
 
