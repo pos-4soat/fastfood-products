@@ -15,18 +15,18 @@ spec:
         - name: fastfood-products-api
           image: 339713094046.dkr.ecr.us-east-1.amazonaws.com/ecr-fastfood_products
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           livenessProbe:
             httpGet:
               path: /health/live
-              port: 80
+              port: 8080
             initialDelaySeconds: 20
             periodSeconds: 10
             timeoutSeconds: 5
           readinessProbe:
             httpGet:
               path: /health/ready
-              port: 80
+              port: 8080
             initialDelaySeconds: 20
             periodSeconds: 10
             timeoutSeconds: 5
