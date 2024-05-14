@@ -31,9 +31,12 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
           resources:
+            limits:
+              cpu: 0.5
+              memory: 400Mi
             requests:
-              cpu: "500m"
-              memory: "500Mi"
+              cpu: 0.2
+              memory: 128Mi
           env:
           - name: ConnectionStrings__SqlServerConnection
             valueFrom:
