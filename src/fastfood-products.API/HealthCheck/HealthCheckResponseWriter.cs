@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Mime;
 using System.Text.Json;
 
 namespace fastfood_products.API.HealthCheck;
 
+[ExcludeFromCodeCoverage]
 public static class HealthCheckResponseWriter
 {
     public static async Task Write(HttpContext context, HealthReport report)

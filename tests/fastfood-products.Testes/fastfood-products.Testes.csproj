@@ -39,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="UnitTests\Middleware\" />
     <Folder Include="UnitTests\Repository\" />
   </ItemGroup>
 

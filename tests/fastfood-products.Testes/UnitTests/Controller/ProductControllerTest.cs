@@ -85,4 +85,21 @@ public class ProductControllerTest : TestFixture
 
         AssertExtensions.AssertResponse<GetProductRequest, GetProductResponse>(result, HttpStatusCode.OK, nameof(StatusResponse.SUCCESS), request);
     }
+
+
+    [Test, Description("")]
+    public async Task ShouldReturnProductNotFoundOnDeleteProductAsync()
+    {
+        DeleteProductRequest request = _modelFakerFactory.DeleteProductRequest();
+
+        Mock<IMediator> _mediatorMock = new Mock<IMediator>();
+        _mediatorMock.Setup(x => x.Send(It.IsAny<DeleteProductRequest>(), default))
+            .ReturnsAsync(Result<DeleteProductResponse>.Failure("PBE010"));
+
+        ProductController service = new(_mediatorMock.Object);
+
+        IActionResult result = await service.DeleteProductAsync(request.ProductId, default);
+
+        AssertExtensions.AssertErrorResponse(result, HttpStatusCode.BadRequest, nameof(StatusResponse.ERROR));
+    }
 }
