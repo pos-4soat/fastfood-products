@@ -9,6 +9,6 @@ spec:
   selector:
     app: fastfood-products-api
   ports:
-    - port: 5055
+    - port: 80
       targetPort: 80
       protocol: TCP
