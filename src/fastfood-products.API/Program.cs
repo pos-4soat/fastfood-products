@@ -93,7 +93,8 @@ app.UseCors(options => options
     .AllowAnyMethod()
     .AllowAnyHeader());
 
-app.MapHealthChecks("/health/ready", new HealthCheckOptions
+
+app.MapHealthChecks("/health/ready", new HealthCheckOptions 
 {
     Predicate = _ => _.Tags.Contains("ready"),
     ResponseWriter = HealthCheckResponseWriter.Write
