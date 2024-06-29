@@ -46,7 +46,7 @@ jobs:
     - name: ZAP Scan
       uses: zaproxy/action-full-scan@v0.10.0
       with:
-        target: 'https://www.zaproxy.org/'
+        target: 'http://localhost'
       
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
